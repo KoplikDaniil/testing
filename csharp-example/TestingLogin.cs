@@ -29,6 +29,7 @@ namespace csharp_example
             driver.Navigate().GoToUrl("https://www.yandex.ru/");
             try
             {
+                wait.Until(ExpectedConditions.TextToBePresentInElement(driver.FindElement(By.LinkText("Завести почту")),"Завести почту"));
                 driver.FindElement(By.LinkText("Завести почту")).Click();
                 driver.FindElement(By.Name("firstname")).SendKeys("Test12345");
                 driver.FindElement(By.Name("lastname")).SendKeys("Test12345");
@@ -37,13 +38,13 @@ namespace csharp_example
                 driver.FindElement(By.ClassName("login__suggest-button")).Click();
                 wait.Until(ExpectedConditions.TextToBePresentInElement(driver.FindElement(By.ClassName("suggest__logins")), "Свободные логины"));
                 IList<IWebElement> select = driver.FindElements(By.ClassName("registration__pseudo-link"));
-                select.ElementAtOrDefault(rand.Next(0, 10)).Click();
+                select.ElementAtOrDefault(rand.Next(0, select.Count)).Click();
                 wait.Until(ExpectedConditions.TextToBePresentInElement(driver.FindElement(By.ClassName("reg-field__popup")), "Логин свободен"));
                // System.Threading.Thread.Sleep(10000);
             }
             catch (NoSuchElementException ex)
             {
-                Assert.Fail("[Selenium] Объект не найден!", ex);
+                Assert.Fail("[Selenium] Объект не найден!"+ ex.ToString());
             }
             catch (Exception ex)
             {
